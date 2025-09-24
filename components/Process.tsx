@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Sparkles } from "lucide-react";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
 import {
   TextRevealCard,
   TextRevealCardDescription,
@@ -137,40 +136,6 @@ const Process = () => {
       {/* Luxury Results Section */}
 
       {/* Luxury CTA Section */}
-    </div>
-  );
-};
-
-interface LuxuryInfoCardProps {
-  icon: React.ElementType;
-  title: string;
-  description: string;
-}
-
-const LuxuryInfoCard = ({
-  icon: Icon,
-  title,
-  description,
-}: LuxuryInfoCardProps) => {
-  return (
-    <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-orange-500/20 rounded-2xl p-8 text-center hover:border-orange-500/40 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl overflow-hidden relative backdrop-blur-sm group">
-      <GlowingEffect
-        disabled={false}
-        glow={true}
-        proximity={100}
-        spread={35}
-        variant="default"
-        blur={2}
-        className="rounded-2xl"
-      />
-      <div className="w-20 h-20 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-10 h-10 text-orange-500" />
-      </div>
-      <h4 className="text-xl font-bold text-[#afa18f] mb-4">{title}</h4>
-      <p className="text-[#afa18f]/70 leading-relaxed">{description}</p>
-
-      {/* Decorative corner element */}
-      <div className="absolute top-4 right-4 w-2 h-2 bg-orange-500/50 rounded-full"></div>
     </div>
   );
 };
