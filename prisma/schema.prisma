@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  bookings  Booking[]
+  
+  @@map("users")
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  bookingId       String        @unique // Custom booking ID (BSC/BST/PRE)
+  userId          String?
+  email           String
+  name            String?
+  phone           String?
+  
+  plan            PlanType
+  selectedDate    DateTime
+  amount          Int           // Amount in paise (for Razorpay)
+  currency        String        @default("INR")
+  
+  status          BookingStatus @default(PENDING)
+  paymentId       String?       // Razorpay payment ID
+  orderId         String?       // Razorpay order ID
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  user            User?         @relation(fields: [userId], references: [id])
+  files           MediaFile[]
+  
+  @@map("bookings")
+}
+
+model MediaFile {
+  id              String    @id @default(cuid())
+  bookingId       String
+  originalName    String
+  fileName        String    // Stored file name
+  fileUrl         String    // S3/Cloudinary URL
+  fileType        FileType
+  mimeType        String
+  fileSize        Int       // Size in bytes
+  
+  // Cloud storage details
+  storageProvider String    // "s3" | "cloudinary"
+  storageKey      String    // S3 key or Cloudinary public_id
+  
+  uploadedAt      DateTime  @default(now())
+  
+  booking         Booking   @relation(fields: [bookingId], references: [id])
+  
+  @@map("media_files")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String   // Hashed password
+  role      AdminRole @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("admin_users")
+}
+
+enum PlanType {
+  BASIC
+  BOOST  
+  PREMIUM
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+enum FileType {
+  IMAGE
+  VIDEO
+  AUDIO
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  VIEWER
+}
