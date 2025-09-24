@@ -1,6 +1,6 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button-variants";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -83,7 +83,7 @@ export function Pricing({
         <label className="relative inline-flex items-center cursor-pointer">
           <Label>
             <Switch
-              ref={switchRef as any}
+              ref={switchRef as React.RefObject<HTMLButtonElement>}
               checked={!isMonthly}
               onCheckedChange={handleToggle}
               className="relative"
@@ -151,11 +151,10 @@ export function Pricing({
                     }
                     format={{
                       style: "currency",
-                      currency: "USD",
+                      currency: "INR",
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     }}
-                    formatter={(value) => `$${value}`}
                     transformTiming={{
                       duration: 500,
                       easing: "ease-out",
